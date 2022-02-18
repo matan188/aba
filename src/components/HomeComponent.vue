@@ -7,12 +7,33 @@ import CommunityIcon from "./icons/IconCommunity.vue";
 import SupportIcon from "./icons/IconSupport.vue";
 </script>
 
+<script>
+import json from "../assets/fixture.json";
+
+export default {
+  data() {
+    return {
+      objectOfAttrs: {
+        id: "container",
+        class: "wrapper",
+      },
+    };
+  },
+  mounted() {
+    console.log("logging here");
+    console.log(json);
+  },
+};
+</script>
+
+script
+
 <template>
   <WelcomeItem>
     <template #icon>
       <DocumentationIcon />
     </template>
-    <template #heading>Documentation</template>
+    <template #heading>!!Documentation</template>
 
     Vue’s
     <a target="_blank" href="https://vuejs.org/">official documentation</a>
