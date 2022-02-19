@@ -6,6 +6,9 @@ import PlusThickIcon from "vue-material-design-icons/PlusThick.vue";
 
 <script>
 import json from "../assets/fixture.json";
+import randomWords from "random-words";
+// import fb from "../firebase/firebaseInit";
+// const firestore = fb.firestore;
 
 export default {
   data() {
@@ -34,12 +37,22 @@ export default {
       this.newName = "";
       this.newValue = "";
     },
+
+    generateId() {
+      return `${randomWords()}-${randomWords()}`;
+    },
+
+    async uploadDoc() {
+      if (this.itemsToAdd == 0) return;
+      console.log("Preparing upload");
+    },
+
+    buildDoc() {},
   },
   mounted() {
     for (const [key, value] of Object.entries(json.items)) {
       this.items[key] = value;
     }
-    console.log("this.items", this.items);
   },
 };
 </script>
@@ -62,11 +75,11 @@ script
         <span>
           <div class="new-item">
             <span class="field-name">
-              <div>Field name</div>
+              <div>Field</div>
               <input v-model="newName" type="text" />
             </span>
             <span class="field-value">
-              <div>Field value</div>
+              <div>Value</div>
               <input v-model="newValue" type="text" />
             </span>
             <div class="plus-button">
