@@ -10,6 +10,7 @@
   "dependencies": {
     "firebase": "^9.6.7",
     "vue": "^3.2.29",
+    "vue-material-design-icons": "^5.0.0",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {

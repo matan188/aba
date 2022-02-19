@@ -1,6 +1,7 @@
 <script setup>
 import WelcomeItem from "./WelcomeItem.vue";
 import DocumentationIcon from "./icons/IconDocumentation.vue";
+import PlusThickIcon from "vue-material-design-icons/PlusThick.vue";
 </script>
 
 <script>
@@ -16,7 +17,7 @@ export default {
       items: {},
     };
   },
-  components: {},
+  components: { PlusThickIcon },
   methods: {},
   mounted() {
     for (const [key, value] of Object.entries(json.items)) {
@@ -39,8 +40,17 @@ script
     <div class="invoice-wrap flex flex-column">
       <form @submit.prevent="submitForm" class="invoice-">
         <h1>New document</h1>
+        <div class="plus-button">
+          <plus-thick-icon />
+        </div>
         <div class="input"></div>
       </form>
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.plus-button {
+  cursor: pointer;
+}
+</style>
