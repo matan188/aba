@@ -5,7 +5,7 @@ import DocumentationIcon from "./icons/IconDocumentation.vue";
 
 <script>
 import json from "../assets/fixture.json";
-import NewHome from "@/components/NewHome.vue";
+// import NewHome from "@/components/NewHome.vue";
 
 export default {
   data() {
@@ -18,7 +18,7 @@ export default {
     };
   },
   components: {
-    NewHome,
+    // NewHome,
   },
   mounted() {
     for (const [key, value] of Object.entries(json.items)) {
@@ -32,7 +32,7 @@ export default {
 script
 
 <template>
-  <NewHome />
+  <!-- <NewHome /> -->
   <WelcomeItem v-for="(value, name, index) in items" :key="index">
     <template #icon>
       <DocumentationIcon />
