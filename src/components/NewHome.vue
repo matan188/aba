@@ -35,12 +35,47 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .home {
   color: #fff;
-}
 
-.home.header {
-  margin-bottom: 65px;
+  .header {
+    margin-bottom: 65px;
+
+    .left,
+    .right {
+      flex: 1;
+    }
+
+    .right {
+      justify-content: flex-end;
+      align-items: center;
+
+      .button,
+      .filter {
+        align-items: center;
+
+        span {
+          font-size: 12px;
+        }
+      }
+
+      .filter {
+        position: relative;
+        margin-right: 40px;
+
+        span,
+        img {
+          pointer-events: none;
+        }
+
+        img {
+          margin-left: 12px;
+          width: 9px;
+          height: 5p;
+        }
+      }
+    }
+  }
 }
 </style>
