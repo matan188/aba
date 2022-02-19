@@ -34,7 +34,7 @@ script
   <div>
     <ul>
       <li v-for="(value, name, index) in items" :key="index">
-        {{ name }}: {{ value }}
+        {{ name }}: {{ value.value }}
       </li>
     </ul>
     <div class="invoice-wrap flex flex-column">

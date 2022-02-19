@@ -1,7 +1,13 @@
 {
   "items": {
-      "car": "Suzuki",
-      "color": "grey",
-      "last_test": "December 14th, 2021"
+      "car": {
+        "value": "Suzuki"
+      },
+      "color": {
+        "value": "Red"
+      },
+      "last_test": {
+        "value": "December 14th, 2021"
+      }
     }
 }
