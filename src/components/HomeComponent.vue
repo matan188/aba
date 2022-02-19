@@ -57,7 +57,7 @@ script
       <form @submit.prevent="submitForm" class="invoice-">
         <h1>New document</h1>
         <div v-for="newItem in itemsToAdd" :key="newItem.name">
-          Name: {{ newItem.name }}, Value: {{ newItem.value }}
+          Name: {{ newItem.name }} | Value: {{ newItem.value }}
         </div>
         <span>
           <div class="new-item">
