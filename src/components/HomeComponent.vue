@@ -5,7 +5,6 @@ import DocumentationIcon from "./icons/IconDocumentation.vue";
 
 <script>
 import json from "../assets/fixture.json";
-// import NewHome from "@/components/NewHome.vue";
 
 export default {
   data() {
@@ -17,9 +16,8 @@ export default {
       items: {},
     };
   },
-  components: {
-    // NewHome,
-  },
+  components: {},
+  methods: {},
   mounted() {
     for (const [key, value] of Object.entries(json.items)) {
       this.items[key] = value;
@@ -32,13 +30,17 @@ export default {
 script
 
 <template>
-  <!-- <NewHome /> -->
-  <WelcomeItem v-for="(value, name, index) in items" :key="index">
-    <template #icon>
-      <DocumentationIcon />
-    </template>
-    <template #heading>{{ value }}</template>
-
-    {{ name }}
-  </WelcomeItem>
+  <div>
+    <ul>
+      <li v-for="(value, name, index) in items" :key="index">
+        {{ name }}: {{ value }}
+      </li>
+    </ul>
+    <div class="invoice-wrap flex flex-column">
+      <form @submit.prevent="submitForm" class="invoice-">
+        <h1>New document</h1>
+        <div class="input"></div>
+      </form>
+    </div>
+  </div>
 </template>
