@@ -1,6 +1,6 @@
 <script setup>
-import WelcomeItem from "./WelcomeItem.vue";
-import DocumentationIcon from "./icons/IconDocumentation.vue";
+// import WelcomeItem from "./WelcomeItem.vue";
+// import DocumentationIcon from "./icons/IconDocumentation.vue";
 import PlusThickIcon from "vue-material-design-icons/PlusThick.vue";
 </script>
 
@@ -15,6 +15,9 @@ export default {
         class: "wrapper",
       },
       items: {},
+      itemsToAdd: [],
+      newName: "",
+      newValue: "",
     };
   },
   components: { PlusThickIcon },
@@ -40,10 +43,23 @@ script
     <div class="invoice-wrap flex flex-column">
       <form @submit.prevent="submitForm" class="invoice-">
         <h1>New document</h1>
-        <div class="plus-button">
-          <plus-thick-icon />
-        </div>
-        <div class="input"></div>
+        <span>
+          <div class="new-item">
+            <span class="field-name">
+              <div>Field name</div>
+              <input v-model="newName" type="text" />
+            </span>
+            <span class="field-value">
+              <div>Field value</div>
+              <input v-model="newValue" type="text" />
+            </span>
+            <div class="plus-button">
+              <button @click="addNewItem">
+                <plus-thick-icon />
+              </button>
+            </div>
+          </div>
+        </span>
       </form>
     </div>
   </div>
@@ -52,5 +68,17 @@ script
 <style lang="scss" scoped>
 .plus-button {
   cursor: pointer;
+}
+
+.new-item {
+  display: flex;
+}
+
+.field-name {
+  margin-right: 30px;
+}
+
+.plus-button {
+  margin-left: 25px;
 }
 </style>
