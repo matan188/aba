@@ -21,7 +21,20 @@ export default {
     };
   },
   components: { PlusThickIcon },
-  methods: {},
+  methods: {
+    addNewItem() {
+      if (!this.newName || !this.newValue) {
+        return;
+      }
+      const newItem = {
+        name: this.newName,
+        value: this.newValue,
+      };
+      this.itemsToAdd.push(newItem);
+      this.newName = "";
+      this.newValue = "";
+    },
+  },
   mounted() {
     for (const [key, value] of Object.entries(json.items)) {
       this.items[key] = value;
@@ -43,6 +56,9 @@ script
     <div class="invoice-wrap flex flex-column">
       <form @submit.prevent="submitForm" class="invoice-">
         <h1>New document</h1>
+        <div v-for="newItem in itemsToAdd" :key="newItem.name">
+          Name: {{ newItem.name }}, Value: {{ newItem.value }}
+        </div>
         <span>
           <div class="new-item">
             <span class="field-name">
