@@ -141,7 +141,8 @@ script
       <div style="margin-right: 25px">{{ signInMessage }}</div>
       <button @click="signOut">Sign out</button>
     </div>
-    <div>
+    <div v-if="!isUserSignedIn">Sorry, user is not signed in :(</div>
+    <div style="margin-top: 30px">
       Insert ID to retrieve Data:
       <input
         v-model="docId"
@@ -149,7 +150,6 @@ script
         placeholder="Insert id"
         type="text"
       />
-      <div v-if="!isUserSignedIn">Sorry, user is not signed in :(</div>
     </div>
     <ul>
       <li v-for="(currItem, name, index) in fetchedItems" :key="index">
