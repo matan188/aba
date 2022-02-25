@@ -87,6 +87,8 @@ export default {
       const randomId = this.generateId();
       const docPointer = doc(db, COLLECTION_NAME, randomId);
       await this.storeDoc(docPointer, this.generatedDoc);
+      console.log("Stored successfully! ID is", randomId);
+      this.itemsToAdd = [];
     },
 
     generateId() {
