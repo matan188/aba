@@ -5,10 +5,9 @@ import PlusThickIcon from "vue-material-design-icons/PlusThick.vue";
 </script>
 
 <script>
-import json from "../assets/fixture.json";
 import randomWords from "random-words";
 import { db } from "../firebase/firebaseInit";
-import { collection, getDoc, doc, setDoc } from "firebase/firestore";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 
 const COLLECTION_NAME = "invoices";
 
