@@ -8,15 +8,19 @@ import PlusThickIcon from "vue-material-design-icons/PlusThick.vue";
 import json from "../assets/fixture.json";
 import randomWords from "random-words";
 import { db } from "../firebase/firebaseInit";
-import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { collection, getDoc, doc, setDoc } from "firebase/firestore";
+
+const COLLECTION_NAME = "invoices";
 
 export default {
   data() {
     return {
       items: {},
+      fetchedItems: [],
       itemsToAdd: [],
       newName: "",
       newValue: "",
+      docId: "",
     };
   },
   computed: {
@@ -44,14 +48,14 @@ export default {
     },
 
     async storeDoc(docReference, docObject) {
-      const docRef = await setDoc(docReference, docObject);
-      console.log("Document written with ID: ", docRef);
+      await setDoc(docReference, docObject);
     },
 
     async submitDoc() {
       const randomId = this.generateId();
-      const docReference = doc(db, "invoices", randomId);
-      this.storeDoc(docReference, this.generatedDoc);
+      const docPointer = doc(db, COLLECTION_NAME, randomId);
+      await this.storeDoc(docPointer, this.generatedDoc);
+      console.log("Document written with ID: ", randomId);
       console.log("generated in submitDoc", this.generatedDoc);
     },
 
@@ -59,12 +63,24 @@ export default {
       return `${randomWords()}-${randomWords()}`;
     },
 
-    buildDoc() {},
-  },
-  mounted() {
-    for (const [key, value] of Object.entries(json.items)) {
-      this.items[key] = value;
-    }
+    buildDoc(docObject) {
+      this.fetchedItems = [];
+      for (const [name, value] of Object.entries(docObject)) {
+        this.fetchedItems.push({ name, value });
+      }
+    },
+
+    async fetchDoc() {
+      const docRef = doc(db, COLLECTION_NAME, this.docId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        this.buildDoc(docSnap.data());
+        this.docId = "";
+      } else {
+        console.error("fetchedDoc not found");
+      }
+    },
   },
 };
 </script>
@@ -73,9 +89,15 @@ script
 
 <template>
   <div>
+    <input
+      v-model="docId"
+      @keyup.enter="fetchDoc"
+      placeholder="Insert id"
+      type="text"
+    />
     <ul>
-      <li v-for="(value, name, index) in items" :key="index">
-        {{ name }}: {{ value.value }}
+      <li v-for="(currItem, name, index) in fetchedItems" :key="index">
+        {{ currItem.name }}: {{ currItem.value }}
       </li>
     </ul>
     <div class="invoice-wrap flex flex-column">
