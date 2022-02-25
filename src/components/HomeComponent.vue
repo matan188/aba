@@ -6,7 +6,12 @@ import PlusThickIcon from "vue-material-design-icons/PlusThick.vue";
 
 <script>
 import randomWords from "random-words";
-import { db } from "../firebase/firebaseInit";
+import { db, auth } from "../firebase/firebaseInit";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut as firebaseSignOut,
+} from "firebase/auth";
 import { getDoc, doc, setDoc } from "firebase/firestore";
 
 const COLLECTION_NAME = "invoices";
@@ -20,6 +25,11 @@ export default {
       newName: "",
       newValue: "",
       docId: "",
+      username: "a@b.com",
+      password: "",
+      isUserSignedIn: false,
+      signInMessage: "",
+      userSignInText: "",
     };
   },
   computed: {
@@ -33,6 +43,29 @@ export default {
   },
   components: { PlusThickIcon },
   methods: {
+    async signIn() {
+      signInWithEmailAndPassword(auth, this.username, this.password)
+        .then((userCredential) => {
+          console.log("user is signed in!", userCredential);
+          this.isUserSignedIn = true;
+          this.signInMessage = "User is signed in!";
+        })
+        .catch((error) => {
+          console.error("Code:", error.code, "Message:", error.message);
+          this.signInMessage = "Failed :(";
+        });
+    },
+
+    async signOut() {
+      firebaseSignOut(auth)
+        .then(() => {
+          console.log("Signout successful");
+        })
+        .catch((error) => {
+          console.error("Signout failed", error.code, error.message);
+        });
+    },
+
     async addNewItem() {
       if (!this.newName || !this.newValue) {
         return;
@@ -54,8 +87,6 @@ export default {
       const randomId = this.generateId();
       const docPointer = doc(db, COLLECTION_NAME, randomId);
       await this.storeDoc(docPointer, this.generatedDoc);
-      console.log("Document written with ID: ", randomId);
-      console.log("generated in submitDoc", this.generatedDoc);
     },
 
     generateId() {
@@ -81,6 +112,17 @@ export default {
       }
     },
   },
+  mounted() {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.userSignInText = `signed-in with user ${user.email}`;
+        this.isUserSignedIn = true;
+      } else {
+        this.userSignInText = "User not signed in.";
+        this.isUserSignedIn = false;
+      }
+    });
+  },
 };
 </script>
 
@@ -88,12 +130,27 @@ script
 
 <template>
   <div>
-    <input
-      v-model="docId"
-      @keyup.enter="fetchDoc"
-      placeholder="Insert id"
-      type="text"
-    />
+    <h1>Signed-in user is {{ userSignInText }}</h1>
+    <div v-if="!isUserSignedIn">
+      <input v-model="username" placeholder="Insert username" type="text" />
+      <input v-model="password" placeholder="Insert password" type="password" />
+      <button @click="signIn">Sign in!</button>
+      <div>{{ signInMessage }}</div>
+    </div>
+    <div style="display: flex; margin-bottom: 30px" v-else>
+      <div style="margin-right: 25px">{{ signInMessage }}</div>
+      <button @click="signOut">Sign out</button>
+    </div>
+    <div>
+      Insert ID to retrieve Data:
+      <input
+        v-model="docId"
+        @keyup.enter="fetchDoc"
+        placeholder="Insert id"
+        type="text"
+      />
+      <div v-if="!isUserSignedIn">Sorry, user is not signed in :(</div>
+    </div>
     <ul>
       <li v-for="(currItem, name, index) in fetchedItems" :key="index">
         {{ currItem.name }}: {{ currItem.value }}
@@ -105,7 +162,7 @@ script
         <button @click="submitDoc">Submit new doc</button>
       </div>
       <div v-for="newItem in itemsToAdd" :key="newItem.name">
-        Name: {{ newItem.name }} | Value: {{ newItem.value }}
+        Name: {{ newItem.name }} - Value: {{ newItem.value }}
       </div>
       <span>
         <div class="new-item">
@@ -129,6 +186,10 @@ script
 </template>
 
 <style lang="scss" scoped>
+.invoice-wrap {
+  margin-top: 30px;
+}
+
 .plus-button {
   cursor: pointer;
 
